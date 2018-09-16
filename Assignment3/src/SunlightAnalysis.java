@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class SunlightAnalysis {
-	static int SEQUENTIAL_THRESHOLD = 1000;
+	
 	static File inputF;
     static File outputF;
     static Scanner input;
@@ -18,15 +20,12 @@ public class SunlightAnalysis {
     static map LightData;
     static String[] dataA;   
     static int blockSize;
-    Timer time = new Timer();
-    
-    
-	public SunlightAnalysis(String input,String output) {
-		// TODO Auto-generated constructor stub
+    static Timer time = new Timer();
+    static double[] MostEfficient = new double[3];
+    				
+  
 
-	}
-
-	  private static void readInFile(File textFile){
+	private static void readInFile(File textFile){
 		  
 		  try {
 	            input = new Scanner(textFile);
@@ -70,6 +69,7 @@ public class SunlightAnalysis {
 	            	}
 	            	i++;            
 	            }
+	            input.close();
 	            	
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
@@ -80,11 +80,44 @@ public class SunlightAnalysis {
 	
 	
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-        inputF = new File(args[0]);
-        outputF = new File(args[1]);
-        readInFile(inputF);
-	}
+	public static void main(String[] args) throws IOException {
+		MostEfficient[3] = 1000;
+        if (args.length !=0){
+			inputF = new File(args[0]);
+			readInFile(inputF);
+			FileWriter writer = new FileWriter(args[1]); 
+	        for(int i=-2; i<100; i++){
+	            if(i==1){
+	            	ParallelAnalysis.SEQUENTIAL_THRESHOLD = noTrees;
+	            }
+	            if(i>1){
+	            	ParallelAnalysis.SEQUENTIAL_THRESHOLD = noTrees/i;
 
+	            }
+	        time.tic();
+	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
+	        double Answer = Data.compute();
+	        double elapsed = time.toc(); 
+	         // Average Sunlight over trees
+			writer.append(i+","+ParallelAnalysis.SEQUENTIAL_THRESHOLD+","+elapsed+"\n");
+	        
+	        if (elapsed<MostEfficient[3]) { MostEfficient[1] = i;	MostEfficient[2]= ParallelAnalysis.SEQUENTIAL_THRESHOLD; MostEfficient[3] =elapsed;}
+	        
+	        }
+	        writer.flush();
+	        writer.close();
+	        System.out.println("Most Efficient: "+"\n"+"Threads: "+MostEfficient[1]+"\n"+"Sequential Cutoff: "+MostEfficient[2]+"\n"+"Elapsed Time: "+MostEfficient[3]);
+	       
+	        ParallelAnalysis.SEQUENTIAL_THRESHOLD = noTrees/(int)MostEfficient[1];
+	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
+	        Double Answer = Data.compute();
+	        System.out.println(Answer/(double)noTrees);
+	        System.out.println(noTrees);
+	        for(TreeData tree : Trees){
+                System.out.printf("%.6f\n",(float)tree.getSun());
+            }
+	        
+        
+        }
+	}
 }

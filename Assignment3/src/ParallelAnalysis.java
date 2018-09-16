@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.concurrent.RecursiveTask;
 public class ParallelAnalysis extends RecursiveTask<Double> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static int SEQUENTIAL_THRESHOLD = 1000000/4;
 	int start;
 	int end;
