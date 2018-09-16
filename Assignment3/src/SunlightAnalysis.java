@@ -18,6 +18,7 @@ public class SunlightAnalysis {
     static map LightData;
     static String[] dataA;   
     static int blockSize;
+    Timer time = new Timer();
     
     
 	public SunlightAnalysis(String input,String output) {
@@ -67,9 +68,9 @@ public class SunlightAnalysis {
 	            		Trees.add(tree);
 	            	}
 	            	}
-	            		            
+	            	i++;            
 	            }
-	            	i++;
+	            	
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
 	            System.out.println(e+" cannot load File");

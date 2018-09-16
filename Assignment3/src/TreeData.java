@@ -7,6 +7,13 @@ public class TreeData {
 	
 	public int[][] treeData;
 	
+	public TreeData(TreeData t) {
+		// TODO Auto-generated constructor stub
+		X1=t.getX(); Y1=t.getY();	coverage = t.getC();}
+	
+	public int getX() {return X1;}
+	public int getY() {return Y1;}	
+	public int getC() {return coverage;}
 	
 	public TreeData(int x,int y,int cover) {
 		// TODO Auto-generated constructor stub

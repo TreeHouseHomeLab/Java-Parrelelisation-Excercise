@@ -5,7 +5,8 @@ public class ParallelAnalysis extends RecursiveTask<Double> {
 	int start;
 	int end;
 	ArrayList<TreeData> trees = new ArrayList<TreeData>();
-	
+	TreeData tree;
+	double treeAnswer;
 	
 	public ParallelAnalysis(ArrayList<TreeData> a, int s, int e) { this.start=s; this.end=e; this.trees=a; }
 	
@@ -14,8 +15,21 @@ public class ParallelAnalysis extends RecursiveTask<Double> {
 	public Double compute() {
 		if(end - start <= SEQUENTIAL_THRESHOLD) {
 			double ans = 0;
-			for(int i=start; i < end; ++i)	
-			ans += trees[i];
+			for(int i=start; i < end; ++i) {	
+				tree = new TreeData(trees.get(i));
+				
+                for(int y = tree.getY(); y<tree.getY()+tree.getC(); y++){
+                    for(int x = tree.getX(); x<tree.getX()+tree.getC(); x++){
+                        if(y>=SunlightAnalysis.LightData.getYSize() || x>=SunlightAnalysis.LightData.getXSize()){
+                            break;
+                        }else{
+                            treeAnswer += SunlightAnalysis.LightData.getData(tree.getX(), tree.getY());
+                        }
+                    }
+                }
+				tree.setSun(treeAnswer);
+				ans +=treeAnswer;
+			}
 			return ans;
 			
 		} else {
@@ -29,7 +43,7 @@ public class ParallelAnalysis extends RecursiveTask<Double> {
 			Double leftAns = left.join();
 			return leftAns + rightAns;
 			}
-		return null;
+		
 	}
 
 }

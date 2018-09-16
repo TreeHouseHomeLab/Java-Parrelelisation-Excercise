@@ -13,8 +13,12 @@ double Data[][];
 	public int getXSize() {return x;}
 	public int getYSize() {return y;}
 	
+	public double getData(int xx,int yy) { return Data[xx][yy];}
+	
+	
 	public void loadMapData(int x1, int y1, double Val) {
 		Data[x1][y1] = Val;
 		
 	}
+
 }
