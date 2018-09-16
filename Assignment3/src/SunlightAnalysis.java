@@ -44,10 +44,14 @@ public class SunlightAnalysis {
 	            		blockSize = LightData.getSize();
 	            	}
 	            	else if (i==1) {
+	            		boolean x=false;
+	            		
 	            		for (int k = 0; k<blockSize; k++) {
+	            			if (x==true) {k-=1; x=false;}
 	            			 while(j<LightData.getXSize()) {
-	            				 LightData.loadMapData(j,gridData,Double.parseDouble(dataA[i])); 
-	            				 k++;
+	            				 LightData.loadMapData(gridData,j,Double.parseDouble(dataA[k])); 
+	            				 if (j==3) {x=true;}
+	            					 k++;
 	            				 
 	            				 j++;
 	            		}
@@ -58,20 +62,28 @@ public class SunlightAnalysis {
 	            					treeData = new int[3];
 	            	}
 	            	else {
-	            	for (int count = 0;count<=noTrees;count++) {
+	            		boolean x=false;
+	         
+	            	for (int count = 0;count<noTrees;count++) {
+	            		if (x==true) {count-=1; x=false;}
 	            		while( l<3)
 	            				{
 	            			treeData[l] = Integer.parseInt(dataA[l]);
-	            					l++;}
+	            					l++;	}
 	            		l=0;
+	            		
 	            		tree = new TreeData(treeData[0],treeData[1],treeData[2]);
 	            		Trees.add(tree);
+		            	if (input.hasNext()) {
+	            		data = input.nextLine();
+		 	            dataA = data.split(" ");}
 	            	}
 	            	}
 	            	i++;  
+	            	if (input.hasNext()) {
 	            	data = input.nextLine();
 	 	            dataA = data.split(" ");
-	            }
+	            }}
 	            
 	            	
 	        } catch (FileNotFoundException e) {
@@ -87,10 +99,12 @@ public class SunlightAnalysis {
 	public static void main(String[] args) throws IOException {
 		MostEfficient[2] = 1000;
 		
-        if (args.length ==0){
-			inputF = new File("../data/small_sample_input.txt");
+        if (args.length !=0){
+        	String filePathIn = "../data/" +args[0];
+        	String filePathOut = "../data/" +args[1];
+			inputF = new File(filePathIn);
 			readInFile(inputF);
-			FileWriter writer = new FileWriter("../data/sample_output.txt"); 
+			FileWriter writer = new FileWriter(filePathOut); 
 	        for(int i=-2; i<100; i++){
 	            if(i==1){
 	            	SEQUENTIAL_THRESHOLD1 = noTrees;
@@ -99,6 +113,7 @@ public class SunlightAnalysis {
 	            	SEQUENTIAL_THRESHOLD1 = noTrees/i;
 
 	            }
+	            if (i>noTrees) {break;}
 	        time.tic();
 	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
 	        Double Answer = Data.compute();
