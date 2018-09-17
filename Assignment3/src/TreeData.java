@@ -20,10 +20,9 @@ public class TreeData {
 		X1=x; Y1=y;	coverage = cover; Sunlight=0;
 	}
 	public void setSun(double v) { 
-        if(this.Sunlight!=0){ System.out.println(toString());
-        System.exit(0);
+        this.Sunlight = v;
     }
-    }
+    
 	
 	public double getSun() {return this.Sunlight;}
 	

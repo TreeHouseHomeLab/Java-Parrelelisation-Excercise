@@ -99,12 +99,12 @@ public class SunlightAnalysis {
 	public static void main(String[] args) throws IOException {
 		MostEfficient[2] = 1000;
 		
-        if (args.length !=0){
-        	String filePathIn = "../data/" +args[0];
-        	String filePathOut = "../data/" +args[1];
-			inputF = new File(filePathIn);
+        if (args.length ==0){
+        	//String filePathIn = "../data/" +args[0];
+        	//String filePathOut = "../data/" +args[1];
+			inputF = new File("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\sample_input.txt");
 			readInFile(inputF);
-			FileWriter writer = new FileWriter(filePathOut); 
+			FileWriter writer = new FileWriter("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\sample_output.txt"); 
 	        for(int i=-2; i<100; i++){
 	            if(i==1){
 	            	SEQUENTIAL_THRESHOLD1 = noTrees;
@@ -118,9 +118,7 @@ public class SunlightAnalysis {
 	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
 	        Double Answer = Data.compute();
 	        double elapsed = time.toc(); 
-	        for(int k=0; k<noTrees; k++){
-				Trees.get(k).Sunlight = 0;
-			}
+
 	         // Average Sunlight over trees
 			writer.append(i+","+SEQUENTIAL_THRESHOLD1+","+elapsed+"\n");
 	        
@@ -131,7 +129,7 @@ public class SunlightAnalysis {
 	        writer.close();
 	        System.out.println("Most Efficient: "+"\n"+"Threads: "+MostEfficient[0]+"\n"+"Sequential Cutoff: "+MostEfficient[1]+"\n"+"Elapsed Time: "+MostEfficient[2]);
 	       
-	        SEQUENTIAL_THRESHOLD1 = noTrees/(int)MostEfficient[1];
+	        SEQUENTIAL_THRESHOLD1 = noTrees/(int)MostEfficient[0];
 	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
 	        Double Answer = Data.compute();
 	        System.out.println(Answer/(double)noTrees);

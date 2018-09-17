@@ -25,11 +25,11 @@ public class ParallelAnalysis extends RecursiveTask<Double> {
                         if(y>=SunlightAnalysis.LightData.getYSize() || x>=SunlightAnalysis.LightData.getXSize()){
                             continue;
                         }else{
-                            treeAnswer += SunlightAnalysis.LightData.getData(tree.getX(), tree.getY());
+                            treeAnswer += SunlightAnalysis.LightData.getData(x, y);
                         }
                     }
                 }
-				tree.setSun(treeAnswer);
+				trees.get(i).setSun(treeAnswer);
 				ans +=treeAnswer;
 			}
 			return ans;
