@@ -9,6 +9,7 @@ public class SunlightAnalysis {
 	
 	static File inputF;
     static File outputF;
+    static File output2;
     static Scanner input;
     static String data;
     double[] SquareMetreValues; 
@@ -102,14 +103,14 @@ public class SunlightAnalysis {
         if (args.length ==0){
         	//String filePathIn = "../data/" +args[0];
         	//String filePathOut = "../data/" +args[1];
-			inputF = new File("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\sample_input.txt");
+			inputF = new File("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\small_sample_input _2.txt");
 			readInFile(inputF);
 			FileWriter writer = new FileWriter("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\sample_output.txt"); 
 	        for(int i=-2; i<100; i++){
 	            if(i==1){
 	            	SEQUENTIAL_THRESHOLD1 = noTrees;
 	            }
-	            if(i>1){
+	            if(i>=1){
 	            	SEQUENTIAL_THRESHOLD1 = noTrees/i;
 
 	            }
@@ -122,23 +123,26 @@ public class SunlightAnalysis {
 	         // Average Sunlight over trees
 			writer.append(i+","+SEQUENTIAL_THRESHOLD1+","+elapsed+"\n");
 	        
-	        if (elapsed<MostEfficient[2]) { MostEfficient[0] = i;	MostEfficient[1]= SEQUENTIAL_THRESHOLD1; MostEfficient[2] =elapsed;}
+	        if (elapsed<MostEfficient[2] && i>0) { MostEfficient[0] = i;	MostEfficient[1]= SEQUENTIAL_THRESHOLD1; MostEfficient[2] =elapsed;}
 	        
 	        }
 	        writer.flush();
 	        writer.close();
-	        System.out.println("Most Efficient: "+"\n"+"Threads: "+MostEfficient[0]+"\n"+"Sequential Cutoff: "+MostEfficient[1]+"\n"+"Elapsed Time: "+MostEfficient[2]);
+	       
 	       
 	        SEQUENTIAL_THRESHOLD1 = noTrees/(int)MostEfficient[0];
 	        ParallelAnalysis Data = new ParallelAnalysis(Trees,0,noTrees);
 	        Double Answer = Data.compute();
-	        System.out.println(Answer/(double)noTrees);
-	        System.out.println(noTrees);
-	        for(TreeData tree : Trees){
-                System.out.printf("%.6f\n",(float)tree.getSun());
-            }
+	        FileWriter writer2 = new FileWriter("D:\\Git Repository\\CSC2002-Assignment3\\Assignment3\\data\\sample_output_Vals.txt"); 
 	        
-        
+	        writer2.append(Double.toString(Answer/(double)noTrees)+"\n");
+	        writer2.append(Integer.toString(noTrees)+"\n");
+	        for(TreeData tree : Trees){
+	        	writer2.append(Double.toString(tree.getSun())+"\n");
+            }
+	        writer2.flush();
+	        writer2.close();
+	        System.out.println("Most Efficient: "+"\n"+"Threads: "+MostEfficient[0]+"\n"+"Sequential Cutoff: "+MostEfficient[1]+"\n"+"Elapsed Time: "+MostEfficient[2]);
         }
 	}
 }
